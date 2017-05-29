@@ -2,7 +2,7 @@
   "version": "0.7.3",
   "name": "Maif",
   "type": "node",
-  "slug": "konnectorslug",
+  "slug": "maif",
   "description": "description",
   "source": "git://github.com/cozy/cozy-konnector-thename.git",
   "fields": {
