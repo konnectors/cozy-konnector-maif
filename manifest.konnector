@@ -1,0 +1,84 @@
+{
+  "version": "0.7.3",
+  "name": "Maif",
+  "type": "node",
+  "slug": "konnectorslug",
+  "description": "description",
+  "source": "git://github.com/cozy/cozy-konnector-thename.git",
+  "fields": {
+    "save_folder": {
+      "doctype": "io.cozy.files",
+      "type": "folder"
+    },
+    "account": {
+      "doctype": "io.cozy.accounts",
+      "account_type": "maif",
+      "accountFormat": "login,password"
+    }
+  },
+  "locales": {
+    "fr": {
+      "description": "Récupère toutes vos factures",
+      "permissions": {
+        "bills": {
+          "description": "Utilisé pour sauvegarder les données de facturation"
+        },
+        "files": {
+          "description": "Utilisé pour sauvegarder les factures"
+        }
+      }
+    }
+  },
+  "permissions": {
+    "bills": {
+      "description": "Required to save the bills data",
+      "type": "io.cozy.bills"
+    },
+    "files": {
+      "description": "Required to save the bills",
+      "type": "io.cozy.files"
+    },
+    "accounts": {
+      "description": "Required to get the account's data",
+      "type": "io.cozy.accounts",
+      "verbs": ["GET"]
+    },
+    "maifusers": {
+      "description": "Required to get sociétaire's data",
+      "type": "fr.maif.maifusers"
+    },
+    "contrats": {
+      "description": "Required to get societaire's contract",
+      "type": "fr.maif.maifuser.contrat"
+    },
+    "homes": {
+      "description": "Required to get societaire's home informations",
+      "type": "fr.maif.maifuser.home"
+    },
+    "foyers": {
+      "description": "Required to get societaire's foyer informations",
+      "type": "fr.maif.maifuser.foyer"
+    },
+    "paymentterms": {
+      "description": "Required to get societaire's payment terms informations",
+      "type": "fr.maif.maifuser.paymentterms"
+    },
+    "sinistrehabitations": {
+      "description": "Required to get societaire's information about sinistre habitation",
+      "type": "fr.maif.maifuser.sinistrehabitation"
+    },
+    "sinistrevehicules": {
+      "description": "Required to get societaire's information about sinistre vehicule",
+      "type": "fr.maif.maifuser.sinistrevehicule"
+    },
+    "societaires": {
+      "description": "Required to get societaire's information",
+      "type": "fr.maif.maifuser.societaire"
+    }
+
+  },
+  "developer": {
+    "name": "yourname",
+    "url": "your web site"
+  }
+}
