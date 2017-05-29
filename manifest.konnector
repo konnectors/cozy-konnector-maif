@@ -4,7 +4,7 @@
   "type": "node",
   "slug": "maif",
   "description": "description",
-  "source": "git://github.com/cozy/cozy-konnector-thename.git",
+  "source": "git://github.com/cozy/cozy-konnector-maif.git",
   "fields": {
     "save_folder": {
       "doctype": "io.cozy.files",
