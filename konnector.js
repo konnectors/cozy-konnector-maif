@@ -5,10 +5,12 @@
 'use strict'
 
 const request = require('request')
+// usefull for debugging the konnector
+// require('request-debug')(request)
 const moment = require('moment')
 const uuid = require('uuid')
-const {baseKonnector,cozyClient, models, log, updateOrCreate} = require('cozy-konnector-libs');
-const imp = require('./maifuser');
+const {baseKonnector, cozyClient, log, updateOrCreate} = require('cozy-konnector-libs')
+const imp = require('./maifuser')
 const MaifUser = imp.doctypeTest
 
 const connectUrl = 'https://connect.maif.fr/connect'
@@ -33,7 +35,7 @@ if (nonce === '') {
   nonce = uuid()
 }
 
-const connector = module.exports = baseKonnector.createNew({
+module.exports = baseKonnector.createNew({
   name: 'MAIF',
   customView: '<%t konnector customview maif %>',
   connectUrl: `${connectUrl}/authorize?response_type=${type}&client_id=${clientId}&scope=${scope}&state=${state}&nonce=${nonce}&redirect_uri=`,
@@ -64,10 +66,9 @@ const connector = module.exports = baseKonnector.createNew({
   fetchOperations: [
     refreshToken,
     fetchData,
-    updateOrCreate(null, MaifUser)
+    // updateOrCreate(null, MaifUser)
   ]
 })
-
 
 function refreshToken (requiredFields, entries, data, next) {
   log('info', 'refreshToken')
@@ -138,7 +139,6 @@ function buildCallbackUrl (requiredFields, callback) {
     url = `${domain}apps/konnectors/${path}`
   } catch (e) {
     log('error', e)
-    console.log(e)
     error = 'internal error'
   }
   callback(error, url)
@@ -177,7 +177,7 @@ function fetchData (requiredFields, entries, data, next) {
     }
   }, (err, response, body) => {
     if (response.statusCode !== 200 && response.statusCode !== '200') {
-      connector.logger.error(`fetchToken error: ${response.statusCode} - ${response.statusMessage}`)
+      log('error', `fetchToken error: ${response.statusCode} - ${response.statusMessage}`)
       err = 'request error'
     }
 
