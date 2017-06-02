@@ -159,6 +159,7 @@ const doctypeSocietaire = models.baseModel.createNew({
 const doctypeTest = models.baseModel.createNew({
   docType: "fr.maif.maifuser.societaire",
   displayName:'maifuser',
+  name:"fr.maif.maifuser.societaire",
   maifuser:{}
 });
 
