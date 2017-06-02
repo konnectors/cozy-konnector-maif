@@ -66,7 +66,7 @@ module.exports = baseKonnector.createNew({
   fetchOperations: [
     refreshToken,
     fetchData,
-    // updateOrCreate(null, MaifUser)
+    updateOrCreate(null, MaifUser)
   ]
 })
 
