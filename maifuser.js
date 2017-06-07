@@ -153,7 +153,8 @@ const doctypeSocietaire = models.baseModel.createNew({
   "codeSituationFamiliale":"U",
   "familySituation":"union libre",
   "codeActif":"A Actif",
-  "referenceClient":"1234567"
+  "referenceClient":"1234567",
+  societaire:{}
 });
 
 const doctypeTest = models.baseModel.createNew({
@@ -167,6 +168,12 @@ doctypeTest.getOne = callback =>
     doctypeTest.all(function(err, maifusers) {
         let error = err || maifusers.error;
         return callback(error, maifusers[0]);
+})
+
+doctypeSocietaire.getOne = callback =>
+    doctypeTest.all(function(err, societaire) {
+        let error = err || societaire.error;
+        return callback(error, societaire[0]);
 })
 
 module.exports = {doctypeContrat, doctypeHome, doctypeFoyer, doctypeModalitesPaiement, doctypeSinistreHabitation, doctypeSinistreVehicule, doctypeSocietaire, doctypeTest}

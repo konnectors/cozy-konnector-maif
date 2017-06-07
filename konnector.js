@@ -12,6 +12,13 @@ const uuid = require('uuid')
 const {baseKonnector, cozyClient, log, updateOrCreate} = require('cozy-konnector-libs')
 const imp = require('./maifuser')
 const MaifUser = imp.doctypeTest
+const Contrat = imp.doctypeContrat
+const Home = imp.doctypeHome
+const Foyer = imp.doctypeFoyer
+const ModalitesPaiement = imp.doctypeModalitesPaiement
+const SinistreHabitation = imp.doctypeSinistreHabitation
+const SinistreVehicule = imp.doctypeSinistreVehicule
+const Societaire = imp.doctypeSocietaire
 
 const connectUrl = 'https://connect.maif.fr/connect'
 const apikey = 'eeafd0bd-a921-420e-91ce-3b52ee5807e8'
@@ -24,6 +31,12 @@ const domain = cozyClient.cozyURL
 const scope = 'openid+profile+offline_access'
 const type = 'code'
 const b64Client = new Buffer(`${clientId}:${secret}`).toString('base64')
+
+const logger = require('printit')({
+  prefix: 'Maif',
+  date: true
+})
+
 let state = ''
 let nonce = ''
 
@@ -62,11 +75,19 @@ module.exports = baseKonnector.createNew({
     'contact'
   ],
 
-  models: [MaifUser],
+  models: [MaifUser,Contrat,Home,Foyer,ModalitesPaiement,SinistreHabitation,SinistreVehicule,Societaire],
   fetchOperations: [
     refreshToken,
     fetchData,
-    updateOrCreate(null, MaifUser)
+    updateOrCreate(logger, MaifUser)
+    // updateOrCreate(logger, Contrat),
+    // updateOrCreate(logger, Home),
+    // updateOrCreate(logger, Foyer),
+    // updateOrCreate(logger, ModalitesPaiement),
+    // updateOrCreate(logger, SinistreHabitation),
+    // updateOrCreate(logger, SinistreVehicule),
+    // updateOrCreate(logger, Societaire)
+    
   ]
 })
 
@@ -85,10 +106,14 @@ function refreshToken (requiredFields, entries, data, next) {
       if (err) { return next(err) }
       fetchToken({
         grant_type: 'authorization_code',
-        code: requiredFields.code,
+        /*code: requiredFields.code,
         state,
         nonce,
-        redirect_uri: ''
+        redirect_uri: ''*/
+        code: 'RCtA6M',
+nonce: 'e25b0b75-f43d-4027-8234-6a890dc2f8ea',
+state: '1ec8ae6b-f368-432a-b3f9-13621994b01c',
+redirect_uri: 'http://localhost/test'
       }, requiredFields, data, next)
     })
   } else {
