@@ -1,5 +1,4 @@
 {
   "access_token": "dsfoidspoipidsihiuhzaoiu",
-  "code": "foo",
-  "redirectPath": "bar"
+  "refresh_token": "dsfoidspoipidsihiuhzaoiu"
 }

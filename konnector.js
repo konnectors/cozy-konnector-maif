@@ -64,7 +64,7 @@ module.exports = baseKonnector.createNew({
     redirectPath: {
       type: 'hidden'
     },
-    refreshToken: {
+    refresh_token: {
       type: 'hidden' // refreshToken
     }
   },
@@ -91,11 +91,11 @@ module.exports = baseKonnector.createNew({
 function refreshToken (requiredFields, entries, data, next) {
   log('info', 'refreshToken')
 
-  if (requiredFields.refreshToken && requiredFields.refreshToken !== '') {
+  if (requiredFields.refresh_token && requiredFields.refresh_token !== '') {
     // Get a new access_token using the refreshToken.
     fetchToken({
       grant_type: 'refresh_token',
-      refresh_token: requiredFields.refreshToken
+      refresh_token: requiredFields.refresh_token
     }, requiredFields, data, next)
   } else if (requiredFields.code && requiredFields.code !== '') {
     // Obtain tokens with the auth code.
@@ -125,7 +125,7 @@ function fetchToken (form, requiredFields, data, next) {
     },
     form
   }, (err, response, body) => {
-    if (response.statusCode !== 200 && response.statusCode !== '200') {
+    if (response && response.statusCode !== 200 && response.statusCode !== '200') {
       log('error', `fetchToken error: ${response.statusCode} - ${response.statusMessage}`)
       err = 'token not found'
     }
@@ -140,7 +140,7 @@ function fetchToken (form, requiredFields, data, next) {
     }
 
     data.accessToken = body.id_token
-    requiredFields.refreshToken = body.refresh_token
+    requiredFields.refresh_token = body.refresh_token
 
     next()
   })
