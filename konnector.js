@@ -9,9 +9,15 @@ const request = require('request')
 // require('request-debug')(request)
 const moment = require('moment')
 const uuid = require('uuid')
-const {baseKonnector, cozyClient, log, updateOrCreate} = require('cozy-konnector-libs')
+const {baseKonnector, cozyClient, log, updateOrCreate, models} = require('cozy-konnector-libs')
 const imp = require('./maifuser')
-const MaifUser = imp.doctypeTest
+const Contrat = imp.doctypeContrat
+const Home = imp.doctypeHome
+const Foyer = imp.doctypeFoyer
+const ModalitesPaiement = imp.doctypeModalitesPaiement
+const SinistreHabitation = imp.doctypeSinistreHabitation
+const SinistreVehicule = imp.doctypeSinistreVehicule
+const Societaire = imp.doctypeSocietaire
 
 const connectUrl = 'https://connect.maif.fr/connect'
 const apikey = 'eeafd0bd-a921-420e-91ce-3b52ee5807e8'
@@ -24,6 +30,12 @@ const domain = cozyClient.cozyURL
 const scope = 'openid+profile+offline_access'
 const type = 'code'
 const b64Client = new Buffer(`${clientId}:${secret}`).toString('base64')
+
+const logger = require('printit')({
+  prefix: 'Maif',
+  date: true
+})
+
 let state = ''
 let nonce = ''
 
@@ -59,14 +71,20 @@ module.exports = baseKonnector.createNew({
 
   dataType: [
     'bill',
-    'contact'
+    'contact',
   ],
 
-  models: [MaifUser],
+  models: [Contrat,Home,Foyer,ModalitesPaiement,SinistreHabitation,SinistreVehicule,Societaire],
   fetchOperations: [
     refreshToken,
     fetchData,
-    updateOrCreate(null, MaifUser)
+    updateOrCreate(logger, Contrat),
+    updateOrCreate(logger, Home),
+    updateOrCreate(logger, Foyer),
+    updateOrCreate(logger, ModalitesPaiement),
+    updateOrCreate(logger, SinistreHabitation),
+    updateOrCreate(logger, SinistreVehicule),
+    updateOrCreate(logger, Societaire)
   ]
 })
 
@@ -144,28 +162,6 @@ function buildCallbackUrl (requiredFields, callback) {
   callback(error, url)
 }
 
-/*
-// Save konnector's fieldValues during fetch process.
-function saveTokenInKonnector (requiredFields, entries, data, next) {
-  log('info', 'saveTokenInKonnector')
-
-  // Disable eslint because we can't require models/konnector at the top
-  // of this file (or Konnector will be empty). It's because in the require
-  // tree of models/konnector, there is the current file.
-  //eslint-disable-next-line
-  const Konnector = require('../models/konnector')
-
-  Konnector.get(connector.slug, (err, konnector) => {
-    if (err) {
-      log('error', err)
-      return next('internal error')
-    }
-
-    konnector.updateFieldValues({ accounts: [requiredFields] }, next)
-  })
-}
-*/
-
 function fetchData (requiredFields, entries, data, next) {
   log('info', 'fetchData')
 
@@ -185,13 +181,68 @@ function fetchData (requiredFields, entries, data, next) {
       return next(err)
     }
     moment.locale('fr')
-    entries.maifusers = [{
-      profile: body,
-      date: moment().format('LLL')
-    }]
+
+    // Il est nécessaire de mettre un s à l'objet maifuser ==> Voir fonction updateOrCreate (ajout d'un s au displayName.toLowerCase pour retrouver l'entrie)
+
+    // Ajout data MaifUser
+    // entries.maifusers = []
+    // entries.maifusers.push({'maifuser':body})
+
+    // Ajout data Contrat
+    entries.contrats = []
+    entries.contrats.push({'contrat':body["MesInfos"].contract})
+
+    // Ajout data Home
+    entries.homes = []
+    entries.homes.push({'home':body["MesInfos"].home})
+
+    // Ajout data Foyer
+    entries.foyers = []
+    entries.foyers.push({'foyer':body["MesInfos"].foyer})
+
+    // Ajout data ModalitesPaiement
+    entries.paymenttermss = []
+    entries.paymenttermss.push({'paymentterms':body["MesInfos"].paymentTerms})
+
+    // Ajout data SinistreHabitation & SinistreVehicule
+    var sinistres = body["MesInfos"].insuranceClaim
+    sinistres=sortByDate(sinistres)
+    entries.sinistrevehicules = []
+    entries.sinistrehabitations = []
+    var sinistrevehicules = []
+    var sinistrehabitations = []
+
+
+    // Parcours des sinistres
+    for(var i=0;i<sinistres.length; i++){
+      // Si immatriculationVehicule ==> sinistre VAM
+      if (sinistres[i]["immatriculationVehicule"] != undefined && sinistres[i]["immatriculationVehicule"] != ""){
+        sinistrevehicules.push(sinistres[i])
+      // Sinon ==> sinistre RAQVAM
+      } else {
+        sinistrehabitations.push(sinistres[i])
+      }
+    }
+
+    entries.sinistrevehicules.push({'sinistrevehicules':sinistrevehicules})
+    entries.sinistrehabitations.push({'sinistrehabitations':sinistrehabitations})
+
+    // Ajout data Societaire
+    entries.societaires = []
+    entries.societaires.push({'societaire':body["MesInfos"].client})
+
     next()
   })
 }
+
+function 	sortByDate(data){
+		data.sort(function(a, b) {
+			a = new Date(a.horodatage).getTime();
+			b = new Date(b.horodatage).getTime();
+	      return a>b ? -1 : a<b ? 1 : 0;
+	  });
+		return data;
+	}
 
 /*
 function createOrUpdateInDB (requiredFields, entries, data, next) {

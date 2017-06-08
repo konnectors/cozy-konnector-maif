@@ -156,20 +156,18 @@ const doctypeSocietaire = models.baseModel.createNew({
   "referenceClient":"1234567"
 });
 
-const doctypeTest = models.baseModel.createNew({
-  docType: "fr.maif.maifuser.societaire",
+const doctypeMaifUser = models.baseModel.createNew({
   displayName:'maifuser',
-  name:"fr.maif.maifuser.societaire",
-  maifuser:{}
+  name:"fr.maif.maifuser.maifuser"
 });
 
-doctypeTest.getOne = callback =>
-    doctypeTest.all(function(err, maifusers) {
+doctypeMaifUser.getOne = callback =>
+    doctypeMaifUser.all(function(err, maifusers) {
         let error = err || maifusers.error;
         return callback(error, maifusers[0]);
 })
 
-module.exports = {doctypeContrat, doctypeHome, doctypeFoyer, doctypeModalitesPaiement, doctypeSinistreHabitation, doctypeSinistreVehicule, doctypeSocietaire, doctypeTest}
+module.exports = {doctypeMaifUser, doctypeContrat, doctypeHome, doctypeFoyer, doctypeModalitesPaiement, doctypeSinistreHabitation, doctypeSinistreVehicule, doctypeSocietaire}
 
 /*const cozy_konnector_libs = require('cozy-konnector-libs');
 const instance = cozy_konnector_libs.cozyclient;
