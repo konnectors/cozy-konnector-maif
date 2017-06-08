@@ -6,7 +6,7 @@ const doctypeContrat = models.baseModel.createNew({
   "docType":"fr.maif.maifuser.contrat",
   "docTypeVersion": "MaifKonnector-0.0.0-draft",
   "societaire": "1234567N",
-  "name": "VAM",
+  "name": "fr.maif.maifuser.contrat",
   "vendor": "Maif",
   "formuleBase": "VAM Assistance panne 0km",
   "startDate": "1989-04-29",
@@ -33,6 +33,7 @@ const doctypeContrat = models.baseModel.createNew({
 const doctypeHome = models.baseModel.createNew({
   "displayName":"home",
   "docType": "fr.maif.maifuser.home",
+  "name": "fr.maif.maifuser.home",
   "address": {
     "street": "2 BOULEVARD DES BELGES",
     "postCode": "69006",
@@ -54,7 +55,7 @@ const doctypeHome = models.baseModel.createNew({
 const doctypeFoyer = models.baseModel.createNew({
   "displayName":"foyer",
   "docType": "fr.maif.maifuser.foyer",
-  "name":"1-A3ZICCA",
+  "name": "fr.maif.maifuser.foyer",
   "address":{
     "street": "2 BOULEVARD DES BELGES",
     "postCode": "69006",
@@ -87,6 +88,7 @@ const doctypeFoyer = models.baseModel.createNew({
 const doctypeModalitesPaiement = models.baseModel.createNew({
   "displayName":"paymentterms",
   "docType": "fr.maif.maifuser.paymentterms",
+  "name": "fr.maif.maifuser.paymentterms",
   "rib": {
     "bic":"SOGEFRPP",
     "iban": "FR76300039876087612"
@@ -99,6 +101,7 @@ const doctypeModalitesPaiement = models.baseModel.createNew({
 const doctypeSinistreHabitation = models.baseModel.createNew({
   "displayName":"sinistrehabitation",
   "docType": "fr.maif.maifuser.sinistrehabitation",
+  "name": "fr.maif.maifuser.sinistrehabitation",
   "docTypeVersion": "MaifKonnector-0.0.0-draft",
   "type": "Habitation",
   "societaire": "1234567N",
@@ -118,6 +121,7 @@ const doctypeSinistreHabitation = models.baseModel.createNew({
 const doctypeSinistreVehicule = models.baseModel.createNew({
   "displayName":"sinistrevehicule",
   "docType": "fr.maif.maifuser.sinistrevehicule",
+  "name": "fr.maif.maifuser.sinistrevehicule",
   "docTypeVersion": "MaifKonnector-0.0.0-draft",
   "type": "Vehicule",
   "societaire": "1234567N",
@@ -136,8 +140,9 @@ const doctypeSinistreVehicule = models.baseModel.createNew({
 const doctypeSocietaire = models.baseModel.createNew({
   "displayName":"societaire",
   "docType": "fr.maif.maifuser.societaire",
+  "name": "fr.maif.maifuser.societaire",
   "vendor": "maif",
-  "name": {
+  "thename": {
     "codeTitrePersonne":"2",
     "prefix":"MME.",
     "family":"DUPOND",
@@ -168,38 +173,3 @@ doctypeMaifUser.getOne = callback =>
 })
 
 module.exports = {doctypeMaifUser, doctypeContrat, doctypeHome, doctypeFoyer, doctypeModalitesPaiement, doctypeSinistreHabitation, doctypeSinistreVehicule, doctypeSocietaire}
-
-/*const cozy_konnector_libs = require('cozy-konnector-libs');
-const instance = cozy_konnector_libs.cozyclient;
-
-let MaifUser = cozydb.getModel('MaifUser', {
-  password: {
-        type: String
-    },
-  profile: {
-  		type: Object
-},
-  date: {
-      type: String
-  }
-}
-);
-
-let MaifUser = {};
-
-module.exports = MaifUser;
-
-MaifUser.all = callback =>
-    MaifUser.request("all", {}, function(err, tasks) {
-        let error = err || tasks.error;
-        return callback(error, tasks);
-    })
-;
-
-MaifUser.getOne = callback =>
-    MaifUser.request("all", {}, function(err, maifusers) {
-        let error = err || maifusers.error;
-        console.log(err);
-        return callback(error, maifusers[0]);
-})
-;*/
