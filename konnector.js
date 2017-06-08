@@ -78,13 +78,13 @@ module.exports = baseKonnector.createNew({
   fetchOperations: [
     refreshToken,
     fetchData,
-    updateOrCreate(logger, Contrat),
-    updateOrCreate(logger, Home),
-    updateOrCreate(logger, Foyer),
-    updateOrCreate(logger, ModalitesPaiement),
-    updateOrCreate(logger, SinistreHabitation),
-    updateOrCreate(logger, SinistreVehicule),
-    updateOrCreate(logger, Societaire)
+    updateOrCreate(logger, Contrat, ['societaire']),
+    updateOrCreate(logger, Home, ['name']),
+    updateOrCreate(logger, Foyer, ['name']),
+    updateOrCreate(logger, ModalitesPaiement, ['societaire']),
+    updateOrCreate(logger, SinistreHabitation, ['timestamp']),
+    updateOrCreate(logger, SinistreVehicule, ['timestamp']),
+    updateOrCreate(logger, Societaire, ['email'])
   ]
 })
 
