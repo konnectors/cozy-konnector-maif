@@ -262,14 +262,16 @@ function fetchData (requiredFields, entries, data, next) {
   })
 }
 
-function 	sortByDate(data){
-		data.sort(function(a, b) {
-			a = new Date(a.horodatage).getTime();
-			b = new Date(b.horodatage).getTime();
-	      return a>b ? -1 : a<b ? 1 : 0;
-	  });
-		return data;
-	}
+function sortByDate(data){
+  if (!data) return []
+
+  data.sort(function(a, b) {
+    a = new Date(a.horodatage).getTime();
+    b = new Date(b.horodatage).getTime();
+    return a>b ? -1 : a<b ? 1 : 0;
+  });
+  return data;
+}
 
 /*
 function createOrUpdateInDB (requiredFields, entries, data, next) {
