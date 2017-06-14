@@ -10,6 +10,7 @@
   "author": "",
   "license": "AGPL-3.0",
   "dependencies": {
+    "async": "^2.4.1",
     "cheerio": "^0.22.0",
     "cozy-konnector-libs": "^2.4.1",
     "node-polyglot": "^2.2.2",

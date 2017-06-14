@@ -4,6 +4,7 @@
 
 'use strict'
 
+const async = require('async')
 const request = require('request')
 // usefull for debugging the konnector
 // require('request-debug')(request)
@@ -76,7 +77,7 @@ module.exports = baseKonnector.createNew({
 
   models: [Contrat,Home,Foyer,ModalitesPaiement,SinistreHabitation,SinistreVehicule,Societaire],
   fetchOperations: [
-    nthtry,
+    tryntimes,
     updateOrCreate(logger, Contrat, ['societaire']),
     updateOrCreate(logger, Home, ['name']),
     updateOrCreate(logger, Foyer, ['name']),
@@ -87,30 +88,27 @@ module.exports = baseKonnector.createNew({
   ]
 })
 
-function nthtry (requiredFields, entries, data, next) {
-  log('info', 'First try connecting to MAIF API')
-  fetchWithRefreshToken(requiredFields, entries, data, err => {
-    if (err) {
-      log('info', 'Second try connecting to MAIF API')
-      fetchWithRefreshToken(requiredFields, entries, data, err => {
-        if (err) {
-          next(err)
-        } else {
-          next()
-        }
-      })
-    } else {
-      next()
-    }
+function tryntimes (requiredFields, entries, data, next) {
+  let count = 0
+  async.whilst(function () {
+    count++
+    return Object.keys(entries).length === 0
+  }, function (callback) {
+    log('info', `Try ${count}`)
+    fetchWithRefreshToken(function(){
+      callback()
+    }, requiredFields, entries, data)
+  }, function (err, result) {
+    next()
   })
 }
 
-function fetchWithRefreshToken (requiredFields, entries, data, next) {
+function fetchWithRefreshToken (cb, requiredFields, entries, data) {
   refreshToken(requiredFields, entries, data, err => {
-    if (err) return next(err)
+    if (err) return cb(err)
     fetchData(requiredFields, entries, data, err => {
-      if (err) return next(err)
-      next()
+      if (err) return cb(err)
+      cb()
     })
   })
 }
