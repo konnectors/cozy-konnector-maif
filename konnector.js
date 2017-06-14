@@ -76,8 +76,7 @@ module.exports = baseKonnector.createNew({
 
   models: [Contrat,Home,Foyer,ModalitesPaiement,SinistreHabitation,SinistreVehicule,Societaire],
   fetchOperations: [
-    refreshToken,
-    fetchData,
+    nthtry,
     updateOrCreate(logger, Contrat, ['societaire']),
     updateOrCreate(logger, Home, ['name']),
     updateOrCreate(logger, Foyer, ['name']),
@@ -87,6 +86,34 @@ module.exports = baseKonnector.createNew({
     updateOrCreate(logger, Societaire, ['email'])
   ]
 })
+
+function nthtry (requiredFields, entries, data, next) {
+  log('info', 'First try connecting to MAIF API')
+  fetchWithRefreshToken(requiredFields, entries, data, err => {
+    if (err) {
+      log('info', 'Second try connecting to MAIF API')
+      fetchWithRefreshToken(requiredFields, entries, data, err => {
+        if (err) {
+          next(err)
+        } else {
+          next()
+        }
+      })
+    } else {
+      next()
+    }
+  })
+}
+
+function fetchWithRefreshToken (requiredFields, entries, data, next) {
+  refreshToken(requiredFields, entries, data, err => {
+    if (err) return next(err)
+    fetchData(requiredFields, entries, data, err => {
+      if (err) return next(err)
+      next()
+    })
+  })
+}
 
 function refreshToken (requiredFields, entries, data, next) {
   log('info', 'refreshToken')
