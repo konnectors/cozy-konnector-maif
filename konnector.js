@@ -198,7 +198,13 @@ function fetchData (requiredFields, entries, data, next) {
     }
   }, (err, response, body) => {
     if (response.statusCode !== 200 && response.statusCode !== '200') {
-      log('error', `fetchToken error: ${response.statusCode} - ${response.statusMessage}`)
+      let messageType = 'error'
+
+      // Do not fail the konnector for 500 and 503 and prefer a retry
+      if (response.statusCode === 500 || response.statusCode === 503) messageType = 'warning'
+
+      log(messageType, `fetchData error: ${response.statusCode} - ${response.statusMessage}`)
+
       err = 'request error'
     }
 
