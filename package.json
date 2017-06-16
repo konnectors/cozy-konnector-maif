@@ -12,7 +12,7 @@
   "dependencies": {
     "async": "^2.4.1",
     "cheerio": "^0.22.0",
-    "cozy-konnector-libs": "^2.4.1",
+    "cozy-konnector-libs": "^2.4.4",
     "node-polyglot": "^2.2.2",
     "printit": "^0.1.20",
     "request": "^2.81.0",
