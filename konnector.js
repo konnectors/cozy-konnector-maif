@@ -10,7 +10,7 @@ const request = require('request')
 // require('request-debug')(request)
 const moment = require('moment')
 const uuid = require('uuid')
-const {baseKonnector, cozyClient, log, updateOrCreate, models} = require('cozy-konnector-libs')
+const {baseKonnector, cozyClient, log, updateOrCreate} = require('cozy-konnector-libs')
 const imp = require('./maifuser')
 const Contrat = imp.doctypeContrat
 const Home = imp.doctypeHome
@@ -30,7 +30,7 @@ const domain = cozyClient.cozyURL
 
 const scope = 'openid+profile+offline_access'
 const type = 'code'
-const b64Client = new Buffer(`${clientId}:${secret}`).toString('base64')
+const b64Client = Buffer.from(`${clientId}:${secret}`).toString('base64')
 
 const logger = require('printit')({
   prefix: 'Maif',
@@ -72,10 +72,10 @@ module.exports = baseKonnector.createNew({
 
   dataType: [
     'bill',
-    'contact',
+    'contact'
   ],
 
-  models: [Contrat,Home,Foyer,ModalitesPaiement,SinistreHabitation,SinistreVehicule,Societaire],
+  models: [Contrat, Home, Foyer, ModalitesPaiement, SinistreHabitation, SinistreVehicule, Societaire],
   fetchOperations: [
     tryntimes,
     updateOrCreate(logger, Contrat, ['societaire']),
@@ -95,10 +95,11 @@ function tryntimes (requiredFields, entries, data, next) {
     return Object.keys(entries).length === 0
   }, function (callback) {
     log('info', `Try ${count}`)
-    fetchWithRefreshToken(function(){
+    fetchWithRefreshToken(function () {
       callback()
     }, requiredFields, entries, data)
   }, function (err, result) {
+    log('error', err)
     next()
   })
 }
@@ -221,33 +222,32 @@ function fetchData (requiredFields, entries, data, next) {
 
     // Ajout data Contrat
     entries.contrats = []
-    entries.contrats.push({'contrat':body["MesInfos"].contract})
+    entries.contrats.push({'contrat': body['MesInfos'].contract})
 
     // Ajout data Home
     entries.homes = []
-    entries.homes.push({'home':body["MesInfos"].home})
+    entries.homes.push({'home': body['MesInfos'].home})
 
     // Ajout data Foyer
     entries.foyers = []
-    entries.foyers.push({'foyer':body["MesInfos"].foyer})
+    entries.foyers.push({'foyer': body['MesInfos'].foyer})
 
     // Ajout data ModalitesPaiement
     entries.paymenttermss = []
-    entries.paymenttermss.push({'paymentterms':body["MesInfos"].paymentTerms})
+    entries.paymenttermss.push({'paymentterms': body['MesInfos'].paymentTerms})
 
     // Ajout data SinistreHabitation & SinistreVehicule
-    var sinistres = body["MesInfos"].insuranceClaim
-    sinistres=sortByDate(sinistres)
+    var sinistres = body['MesInfos'].insuranceClaim
+    sinistres = sortByDate(sinistres)
     entries.sinistrevehicules = []
     entries.sinistrehabitations = []
     var sinistrevehicules = []
     var sinistrehabitations = []
 
-
     // Parcours des sinistres
-    for(var i=0;i<sinistres.length; i++){
+    for (var i = 0; i < sinistres.length; i++) {
       // Si immatriculationVehicule ==> sinistre VAM
-      if (sinistres[i]["immatriculationVehicule"] != undefined && sinistres[i]["immatriculationVehicule"] != ""){
+      if (sinistres[i]['immatriculationVehicule'] !== undefined && sinistres[i]['immatriculationVehicule'] !== '') {
         sinistrevehicules.push(sinistres[i])
       // Sinon ==> sinistre RAQVAM
       } else {
@@ -255,26 +255,26 @@ function fetchData (requiredFields, entries, data, next) {
       }
     }
 
-    entries.sinistrevehicules.push({'sinistrevehicules':sinistrevehicules})
-    entries.sinistrehabitations.push({'sinistrehabitations':sinistrehabitations})
+    entries.sinistrevehicules.push({'sinistrevehicules': sinistrevehicules})
+    entries.sinistrehabitations.push({'sinistrehabitations': sinistrehabitations})
 
     // Ajout data Societaire
     entries.societaires = []
-    entries.societaires.push({'societaire':body["MesInfos"].client})
+    entries.societaires.push({'societaire': body['MesInfos'].client})
 
     next()
   })
 }
 
-function sortByDate(data){
+function sortByDate (data) {
   if (!data) return []
 
-  data.sort(function(a, b) {
-    a = new Date(a.horodatage).getTime();
-    b = new Date(b.horodatage).getTime();
-    return a>b ? -1 : a<b ? 1 : 0;
-  });
-  return data;
+  data.sort(function (a, b) {
+    a = new Date(a.horodatage).getTime()
+    b = new Date(b.horodatage).getTime()
+    return a > b ? -1 : a < b ? 1 : 0
+  })
+  return data
 }
 
 /*
