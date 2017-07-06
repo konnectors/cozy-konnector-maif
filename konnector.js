@@ -18,6 +18,7 @@ const Foyer = imp.doctypeFoyer
 const ModalitesPaiement = imp.doctypeModalitesPaiement
 const SinistreHabitation = imp.doctypeSinistreHabitation
 const SinistreVehicule = imp.doctypeSinistreVehicule
+const SinistrePersonne = imp.doctypeSinistrePersonne
 const Societaire = imp.doctypeSocietaire
 
 const connectUrl = 'https://connect.maif.fr/connect'
@@ -85,6 +86,7 @@ module.exports = baseKonnector.createNew({
     updateOrCreate(logger, ModalitesPaiement, ['societaire']),
     updateOrCreate(logger, SinistreHabitation, ['timestamp']),
     updateOrCreate(logger, SinistreVehicule, ['timestamp']),
+    updateOrCreate(logger, SinistrePersonne, ['timestamp']),
     updateOrCreate(logger, Societaire, ['email'])
   ]
 })
@@ -244,22 +246,26 @@ function fetchData (requiredFields, entries, data, next) {
     sinistres = sortByDate(sinistres)
     entries.sinistrevehicules = []
     entries.sinistrehabitations = []
+    entries.sinistrepersonnes = []
     var sinistrevehicules = []
     var sinistrehabitations = []
+    var sinistrepersonnes = []
 
     // Parcours des sinistres
     for (var i = 0; i < sinistres.length; i++) {
       // Si immatriculationVehicule ==> sinistre VAM
-      if (sinistres[i]['immatriculationVehicule'] !== undefined && sinistres[i]['immatriculationVehicule'] !== '') {
+      if (sinistres[i].type === 'Véhicule') {
         sinistrevehicules.push(sinistres[i])
-      // Sinon ==> sinistre RAQVAM
-      } else {
+      } else if (sinistres[i].type === 'Lieu') {
         sinistrehabitations.push(sinistres[i])
+      } else if (sinistres[i].type === 'Personne') {
+        sinistrepersonnes.push(sinistres[i])
       }
     }
 
     entries.sinistrevehicules.push({'sinistrevehicules': sinistrevehicules})
     entries.sinistrehabitations.push({'sinistrehabitations': sinistrehabitations})
+    entries.sinistrepersonnes.push({'sinistrepersonnes': sinistrepersonnes})
 
     // Ajout data Societaire
     entries.societaires = []

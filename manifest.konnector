@@ -71,6 +71,10 @@
       "description": "Required to get societaire's information about sinistre vehicule",
       "type": "fr.maif.maifuser.sinistrevehicule"
     },
+    "sinistrepersonnes": {
+      "description": "Required to get societaire's information about sinistre personne",
+      "type": "fr.maif.maifuser.sinistrepersonne"
+    },
     "societaires": {
       "description": "Required to get societaire's information",
       "type": "fr.maif.maifuser.societaire"
