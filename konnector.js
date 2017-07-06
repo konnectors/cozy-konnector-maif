@@ -100,8 +100,7 @@ function tryntimes (requiredFields, entries, data, next) {
       callback()
     }, requiredFields, entries, data)
   }, function (err, result) {
-    console.log(err, 'err in tryntimes')
-    log('error', err.message || err)
+    if (err) log('error', err.message || err)
     next()
   })
 }
@@ -185,7 +184,6 @@ function buildCallbackUrl (requiredFields, callback) {
     }
     url = `${domain}apps/konnectors/${path}`
   } catch (e) {
-    console.log(e, 'error trying to build callback url')
     log('error', e.message || e)
     error = 'internal error'
   }
