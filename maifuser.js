@@ -118,6 +118,14 @@ const doctypeSinistreHabitation = models.baseModel.createNew({
   }
 })
 
+const doctypeSinistrePersonne = models.baseModel.createNew({
+  'displayName': 'sinistrepersonne',
+  'docType': 'fr.maif.maifuser.sinistrepersonne',
+  'name': 'fr.maif.maifuser.sinistrepersonne',
+  'docTypeVersion': 'MaifKonnector-0.0.0-draft',
+  'type': 'Personne'
+})
+
 const doctypeSinistreVehicule = models.baseModel.createNew({
   'displayName': 'sinistrevehicule',
   'docType': 'fr.maif.maifuser.sinistrevehicule',
@@ -172,4 +180,4 @@ doctypeMaifUser.getOne = callback =>
       return callback(error, maifusers[0])
     })
 
-module.exports = {doctypeMaifUser, doctypeContrat, doctypeHome, doctypeFoyer, doctypeModalitesPaiement, doctypeSinistreHabitation, doctypeSinistreVehicule, doctypeSocietaire}
+module.exports = {doctypeMaifUser, doctypeContrat, doctypeHome, doctypeFoyer, doctypeModalitesPaiement, doctypeSinistreHabitation, doctypeSinistreVehicule, doctypeSinistrePersonne, doctypeSocietaire}
