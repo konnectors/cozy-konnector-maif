@@ -31,6 +31,7 @@ const domain = cozyClient.cozyURL
 const scope = 'openid+profile+offline_access'
 const type = 'code'
 const b64Client = Buffer.from(`${clientId}:${secret}`).toString('base64')
+const REQUEST_TIMEOUT_MS = 5000
 
 const logger = require('printit')({
   prefix: 'Maif',
@@ -149,7 +150,8 @@ function fetchToken (form, requiredFields, data, next) {
     headers: {
       Authorization: `Basic ${b64Client}`
     },
-    form
+    form,
+    timeout: REQUEST_TIMEOUT_MS
   }, (err, response, body) => {
     if (response && response.statusCode !== 200 && response.statusCode !== '200') {
       log('error', `fetchToken error: ${response.statusCode} - ${response.statusMessage}`)
@@ -196,7 +198,8 @@ function fetchData (requiredFields, entries, data, next) {
     json: true,
     headers: {
       Authorization: `Bearer ${data.accessToken}`
-    }
+    },
+    timeout: REQUEST_TIMEOUT_MS
   }, (err, response, body) => {
     if (response.statusCode !== 200 && response.statusCode !== '200') {
       let messageType = 'error'
