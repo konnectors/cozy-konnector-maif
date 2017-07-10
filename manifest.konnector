@@ -63,13 +63,9 @@
       "description": "Required to get societaire's payment terms informations",
       "type": "fr.maif.maifuser.paymentterms"
     },
-    "sinistrehabitations": {
-      "description": "Required to get societaire's information about sinistre habitation",
-      "type": "fr.maif.maifuser.sinistrehabitation"
-    },
-    "sinistrevehicules": {
-      "description": "Required to get societaire's information about sinistre vehicule",
-      "type": "fr.maif.maifuser.sinistrevehicule"
+    "sinistre": {
+      "description": "Required to get societaire's information about sinistre",
+      "type": "fr.maif.maifuser.sinistre"
     },
     "societaires": {
       "description": "Required to get societaire's information",

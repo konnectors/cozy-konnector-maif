@@ -98,44 +98,14 @@ const doctypeModalitesPaiement = models.baseModel.createNew({
   'vendor': 'maif'
 })
 
-const doctypeSinistreHabitation = models.baseModel.createNew({
-  'displayName': 'sinistrehabitation',
-  'docType': 'fr.maif.maifuser.sinistrehabitation',
-  'name': 'fr.maif.maifuser.sinistrehabitation',
-  'docTypeVersion': 'MaifKonnector-0.0.0-draft',
-  'type': 'Habitation',
-  'societaire': '1234567N',
-  'timestamp': '2015-07-20T19:00',
-  'lieuSurvenance': 'LYON 06',
-  'ref': 'F150181177B',
-  'typeLieuSurvenance': 'Agglomération',
-  'natureLieu': 'Appartement',
-  'address': {
-    'street': '2, Boulevard des Belges',
-    'postCode': '6900',
-    'city': 'LYON 06',
-    'country': 'FRANCE'
-  }
+
+const doctypeSinistre = models.baseModel.createNew({
+  'displayName': 'sinistre',
+  'docType': 'fr.maif.maifuser.sinistre',
+  'name': 'fr.maif.maifuser.sinistre',
+  'docTypeVersion': 'MaifKonnector-0.0.0-draft'
 })
 
-const doctypeSinistreVehicule = models.baseModel.createNew({
-  'displayName': 'sinistrevehicule',
-  'docType': 'fr.maif.maifuser.sinistrevehicule',
-  'name': 'fr.maif.maifuser.sinistrevehicule',
-  'docTypeVersion': 'MaifKonnector-0.0.0-draft',
-  'type': 'Vehicule',
-  'societaire': '1234567N',
-  'timestamp': '2015-07-20T19:00',
-  'lieuSurvenance': 'LYON 06',
-  'ref': 'F150181177B',
-  'typeLieuSurvenance': 'Agglomération',
-  'immatriculationVehicule': 'AA-123-XD',
-  'driver': {
-    'prefix': 'Mme',
-    'family': 'Dupond',
-    'given': 'Germaine'
-  }
-})
 
 const doctypeSocietaire = models.baseModel.createNew({
   'displayName': 'societaire',
@@ -172,4 +142,4 @@ doctypeMaifUser.getOne = callback =>
       return callback(error, maifusers[0])
     })
 
-module.exports = {doctypeMaifUser, doctypeContrat, doctypeHome, doctypeFoyer, doctypeModalitesPaiement, doctypeSinistreHabitation, doctypeSinistreVehicule, doctypeSocietaire}
+module.exports = {doctypeMaifUser, doctypeContrat, doctypeHome, doctypeFoyer, doctypeModalitesPaiement, doctypeSinistre, doctypeSocietaire}

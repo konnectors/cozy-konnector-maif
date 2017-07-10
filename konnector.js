@@ -16,8 +16,7 @@ const Contrat = imp.doctypeContrat
 const Home = imp.doctypeHome
 const Foyer = imp.doctypeFoyer
 const ModalitesPaiement = imp.doctypeModalitesPaiement
-const SinistreHabitation = imp.doctypeSinistreHabitation
-const SinistreVehicule = imp.doctypeSinistreVehicule
+const Sinistre = imp.doctypeSinistre
 const Societaire = imp.doctypeSocietaire
 
 const connectUrl = 'https://connect.maif.fr/connect'
@@ -76,15 +75,14 @@ module.exports = baseKonnector.createNew({
     'contact'
   ],
 
-  models: [Contrat, Home, Foyer, ModalitesPaiement, SinistreHabitation, SinistreVehicule, Societaire],
+  models: [Contrat, Home, Foyer, ModalitesPaiement, Sinistre, Societaire],
   fetchOperations: [
     tryntimes,
     updateOrCreate(logger, Contrat, ['societaire']),
     updateOrCreate(logger, Home, ['name']),
     updateOrCreate(logger, Foyer, ['name']),
     updateOrCreate(logger, ModalitesPaiement, ['societaire']),
-    updateOrCreate(logger, SinistreHabitation, ['timestamp']),
-    updateOrCreate(logger, SinistreVehicule, ['timestamp']),
+    updateOrCreate(logger, Sinistre, ['timestamp']),
     updateOrCreate(logger, Societaire, ['email'])
   ]
 })
@@ -239,27 +237,11 @@ function fetchData (requiredFields, entries, data, next) {
     entries.paymenttermss = []
     entries.paymenttermss.push({'paymentterms': body['MesInfos'].paymentTerms})
 
-    // Ajout data SinistreHabitation & SinistreVehicule
-    var sinistres = body['MesInfos'].insuranceClaim
+    // Ajout data Sinistre
+    let sinistres = body['MesInfos'].insuranceClaim
     sinistres = sortByDate(sinistres)
-    entries.sinistrevehicules = []
-    entries.sinistrehabitations = []
-    var sinistrevehicules = []
-    var sinistrehabitations = []
-
-    // Parcours des sinistres
-    for (var i = 0; i < sinistres.length; i++) {
-      // Si immatriculationVehicule ==> sinistre VAM
-      if (sinistres[i]['immatriculationVehicule'] !== undefined && sinistres[i]['immatriculationVehicule'] !== '') {
-        sinistrevehicules.push(sinistres[i])
-      // Sinon ==> sinistre RAQVAM
-      } else {
-        sinistrehabitations.push(sinistres[i])
-      }
-    }
-
-    entries.sinistrevehicules.push({'sinistrevehicules': sinistrevehicules})
-    entries.sinistrehabitations.push({'sinistrehabitations': sinistrehabitations})
+    entries.sinistres = []
+    entries.sinistres.push({'sinistre': sinistres})
 
     // Ajout data Societaire
     entries.societaires = []
