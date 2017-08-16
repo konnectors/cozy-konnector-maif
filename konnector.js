@@ -135,7 +135,8 @@ function refreshToken (requiredFields, entries, data, next) {
       }, requiredFields, data, next)
     })
   } else {
-    next('token not found') // Need to perform OpenIdConnect steps.
+    log('info', `Token not found : You need to perform OpenIdConnect steps.`)
+    next('token not found')
   }
 }
 
