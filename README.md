@@ -1,4 +1,4 @@
-[Cozy][cozy] <YOUR SUPER NEW KONNECTOR NAME>
+[Cozy][cozy] MAIF
 =======================================
 
 What's Cozy?
@@ -8,10 +8,14 @@ What's Cozy?
 
 [Cozy] is a platform that brings all your web services in the same private space. With it, your webapps and your devices can share data easily, providing you with a new experience. You can install Cozy on your own hardware where no one's tracking you.
 
-What's this new konnector?
+What's this konnector?
 --------------------------
 
-<YOUR DESCRIPTION HERE>
+This konnector pulls data from your [MAIF](https://maif.fr) account :
+
+- Accidents
+- Contracts
+
 
 ### Open a Pull-Request
 
@@ -111,7 +115,7 @@ git push origin build
 
 And your konnector can now be installed using the following url :
 
-git://github.com/cozy/cozy-konnector-<yourkonnector>.git#build
+git://github.com/cozy/cozy-konnector-maif.git#build
 
 ### Standard
 
@@ -139,7 +143,7 @@ You can reach the Cozy Community by:
 License
 -------
 
-<YOUR KONNECTOR NAME> is developed by <your name> and distributed under the [AGPL v3 license][agpl-3.0].
+cozy-konnector-maif is developed by Cozy and distributed under the [AGPL v3 license][agpl-3.0].
 
 [cozy]: https://cozy.io "Cozy Cloud"
 [agpl-3.0]: https://www.gnu.org/licenses/agpl-3.0.html

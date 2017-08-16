@@ -135,7 +135,8 @@ function refreshToken (requiredFields, entries, data, next) {
       }, requiredFields, data, next)
     })
   } else {
-    next('token not found') // Need to perform OpenIdConnect steps.
+    log('info', `Token not found : You need to perform OpenIdConnect steps.`)
+    next('token not found')
   }
 }
 
@@ -188,6 +189,20 @@ function buildCallbackUrl (requiredFields, callback) {
   callback(error, url)
 }
 
+/**
+ * The API sends the Euro sign as the 128 character (80 in hex)
+ * We convert it here
+ */
+function convert128ToEuro (s) {
+  return s.replace(/\u0080/, '€')
+}
+
+function cleanHomeData (homeData) {
+  return Object.assign({}, homeData, {
+    patrimoineMobilier: convert128ToEuro(homeData.patrimoineMobilier)
+  })
+}
+
 function fetchData (requiredFields, entries, data, next) {
   log('info', 'fetchData')
 
@@ -227,7 +242,7 @@ function fetchData (requiredFields, entries, data, next) {
 
     // Ajout data Home
     entries.homes = []
-    entries.homes.push({'home': body['MesInfos'].home})
+    entries.homes.push({'home': body['MesInfos'].home.map(cleanHomeData) })
 
     // Ajout data Foyer
     entries.foyers = []
