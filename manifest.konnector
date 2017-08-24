@@ -6,10 +6,6 @@
   "description": "description",
   "source": "git://github.com/cozy/cozy-konnector-maif.git",
   "fields": {
-    "save_folder": {
-      "doctype": "io.cozy.files",
-      "type": "folder"
-    },
     "account": {
       "doctype": "io.cozy.accounts",
       "account_type": "maif",
