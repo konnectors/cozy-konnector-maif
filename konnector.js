@@ -214,7 +214,7 @@ function fetchData (requiredFields, entries, data, next) {
     },
     timeout: REQUEST_TIMEOUT_MS
   }, (err, response, body) => {
-    if (response.statusCode !== 200 && response.statusCode !== '200') {
+    if (response && response.statusCode !== 200 && response.statusCode !== '200') {
       let messageType = 'error'
 
       // Do not fail the konnector for 500 and 503 and prefer a retry
