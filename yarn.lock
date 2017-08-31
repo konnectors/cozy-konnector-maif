@@ -520,19 +520,19 @@ core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
 
-cozy-client-js@^0.3.4:
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/cozy-client-js/-/cozy-client-js-0.3.5.tgz#1e5c8d10000b302bb90e7c59670602c147449d27"
+cozy-client-js@^0.3.15:
+  version "0.3.15"
+  resolved "https://registry.yarnpkg.com/cozy-client-js/-/cozy-client-js-0.3.15.tgz#f87e47f7aa08dbac4309a9a5f94322d747ce9799"
 
-cozy-konnector-libs@^2.5.3:
-  version "2.5.3"
-  resolved "https://registry.yarnpkg.com/cozy-konnector-libs/-/cozy-konnector-libs-2.5.3.tgz#a7d22e6e8d6e8e9816424d8202924f8f56e28a1c"
+cozy-konnector-libs@^2.5.4:
+  version "2.5.4"
+  resolved "https://registry.yarnpkg.com/cozy-konnector-libs/-/cozy-konnector-libs-2.5.4.tgz#0e00da33226b546440cc90a6bed02f5cfc7e40c9"
   dependencies:
     async "^2.4.1"
     bluebird "^3.5.0"
     btoa "^1.1.2"
     core-js "^2.4.1"
-    cozy-client-js "^0.3.4"
+    cozy-client-js "^0.3.15"
     cozy-slug "^0.2.2"
     debug "^2.6.8"
     isomorphic-fetch "^2.2.1"
