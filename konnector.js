@@ -141,7 +141,7 @@ function refreshToken (requiredFields, entries, data, next) {
 }
 
 function fetchToken (form, requiredFields, data, next) {
-  log('info', 'fetchToken')
+  log('info', form, 'fetchToken')
 
   request.post({
     url: `${connectUrl}/token`,
@@ -153,6 +153,7 @@ function fetchToken (form, requiredFields, data, next) {
     timeout: REQUEST_TIMEOUT_MS
   }, (err, response, body) => {
     if (response && response.statusCode !== 200 && response.statusCode !== '200') {
+      log('info', require('util').inspect(response), 'response details')
       log('error', `fetchToken error: ${response.statusCode} - ${response.statusMessage}`)
       err = 'token not found'
     }
