@@ -3,6 +3,8 @@ const {log} = require('cozy-konnector-libs')
 
 const cozyFields = JSON.parse(process.env.COZY_FIELDS)
 
+konnector.account_id = cozyFields.account
+
 konnector.fetch({account: cozyFields.account, folderPath: cozyFields.folder_to_save}, err => {
   log('debug', cozyFields.folder_to_save)
   log('debug', 'The konnector has been run')
