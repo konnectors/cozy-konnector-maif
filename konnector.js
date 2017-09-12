@@ -132,31 +132,42 @@ function fetchData (requiredFields, entries, data, next) {
       // entries.maifusers = []
       // entries.maifusers.push({'maifuser':body})
 
-      // Ajout data Contrat
-      entries.contrats = []
-      entries.contrats.push({'contrat': body['MesInfos'].contract})
+      if (body) {
 
-      // Ajout data Home
-      entries.homes = []
-      entries.homes.push({'home': body['MesInfos'].home.map(cleanHomeData)})
+        // Ajout data Contrat
+        entries.contrats = []
+        entries.contrats.push({'contrat': body['MesInfos'].contract})
 
-      // Ajout data Foyer
-      entries.foyers = []
-      entries.foyers.push({'foyer': body['MesInfos'].foyer})
+        // Ajout data Home
+        entries.homes = []
+        if (typeof body['MesInfos'].home.map === 'function') {
+          entries.homes.push({'home': body['MesInfos'].home.map(cleanHomeData)})
+        } else {
+          log('info', 'No Home data')
+        }
 
-      // Ajout data ModalitesPaiement
-      entries.paymenttermss = []
-      entries.paymenttermss.push({'paymentterms': body['MesInfos'].paymentTerms})
+        // Ajout data Foyer
+        entries.foyers = []
+        entries.foyers.push({'foyer': body['MesInfos'].foyer})
 
-      // Ajout data Sinistre
-      let sinistres = body['MesInfos'].insuranceClaim
-      sinistres = sortByDate(sinistres)
-      entries.sinistres = []
-      entries.sinistres.push({'sinistre': sinistres})
+        // Ajout data ModalitesPaiement
+        entries.paymenttermss = []
+        entries.paymenttermss.push({'paymentterms': body['MesInfos'].paymentTerms})
 
-      // Ajout data Societaire
-      entries.societaires = []
-      entries.societaires.push({'societaire': body['MesInfos'].client})
+        // Ajout data Sinistre
+        let sinistres = body['MesInfos'].insuranceClaim
+        sinistres = sortByDate(sinistres)
+        entries.sinistres = []
+        entries.sinistres.push({'sinistre': sinistres})
+
+        // Ajout data Societaire
+        entries.societaires = []
+        entries.societaires.push({'societaire': body['MesInfos'].client})
+      } else {
+        log('info', 'No data in the body returned by the MAIF api')
+        log('error', err, 'error message')
+        if (err && err.message) log('error', err.message)
+      }
 
       next()
     }
@@ -173,18 +184,3 @@ function sortByDate (data) {
   })
   return data
 }
-
-/*
-function createOrUpdateInDB (requiredFields, entries, data, next) {
-  log('info', 'createOrUpdateInDB')
-
-  updateOrCreate(entries.maifusers[0], (err) => {
-    if (err) {
-      log('error', err)
-      return next('internal error')
-    }
-
-    next()
-  })
-}
-*/
