@@ -54,6 +54,9 @@ module.exports = baseKonnector.createNew({
   ]
 })
 
+// for tests
+module.exports.renewToken = renewToken
+
 function renewToken (requiredFields) {
   return cozyClient.fetchJSON('POST', `/accounts/maif/${module.exports.account_id}/refresh`)
   .then(body => {
