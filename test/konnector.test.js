@@ -3,6 +3,7 @@ Object.assign(process.env, require('../data/env'))
 const konnector = require('../konnector')
 const {cozyClient} = require('cozy-konnector-libs')
 
+// This tests that the access_token and refresh_token are really renewed by the stack
 test('renewToken updates the values of the maif account', () => {
   let MaifAccount = null
   return fetchMaifAccountContent()
