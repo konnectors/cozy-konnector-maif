@@ -135,7 +135,7 @@ function fetchData (requiredFields, entries, data, next) {
       // entries.maifusers = []
       // entries.maifusers.push({'maifuser':body})
 
-      if (body) {
+      if (body && body['MesInfos']) {
 
         // Ajout data Contrat
         entries.contrats = []
@@ -143,7 +143,7 @@ function fetchData (requiredFields, entries, data, next) {
 
         // Ajout data Home
         entries.homes = []
-        if (typeof body['MesInfos'].home.map === 'function') {
+        if (body['MesInfos'].home && typeof body['MesInfos'].home.map === 'function') {
           entries.homes.push({'home': body['MesInfos'].home.map(cleanHomeData)})
         } else {
           log('info', 'No Home data')
