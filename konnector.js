@@ -22,7 +22,7 @@ const Societaire = imp.doctypeSocietaire
 const apikey = 'eeafd0bd-a921-420e-91ce-3b52ee5807e8'
 const infoUrl = `https://openapiweb.maif.fr/prod/cozy/v1/mes_infos?apikey=${apikey}`
 
-const REQUEST_TIMEOUT_MS = 5000
+const REQUEST_TIMEOUT_MS = 10000
 
 const logger = require('printit')({
   prefix: 'Maif',
@@ -74,7 +74,10 @@ function tryntimes (requiredFields, entries, data, next) {
     log('info', `Try ${count}`)
     fetchData(requiredFields, entries, data, callback)
   }, function (err, result) {
-    if (err) log('error', err.message || err)
+    if (err) {
+      console.log(err, 'We fall in the error callback of the whilst function')
+      log('error', err.message || err)
+    }
     next()
   })
 }
@@ -105,6 +108,11 @@ function fetchData (requiredFields, entries, data, next) {
     },
     timeout: REQUEST_TIMEOUT_MS
   }, (err, response, body) => {
+    if (err) {
+      console.log(err, 'There was a request error')
+      log('warning', 'The was a request error trying another time')
+      return next(err)
+    }
     if (response && Number(response.statusCode) === 401) {
       log('info', 'Access token expired. Renewing it')
       renewToken(requiredFields)
@@ -136,7 +144,6 @@ function fetchData (requiredFields, entries, data, next) {
       // entries.maifusers.push({'maifuser':body})
 
       if (body && body['MesInfos']) {
-
         // Ajout data Contrat
         entries.contrats = []
         entries.contrats.push({'contrat': body['MesInfos'].contract})
@@ -168,8 +175,7 @@ function fetchData (requiredFields, entries, data, next) {
         entries.societaires.push({'societaire': body['MesInfos'].client})
       } else {
         log('info', 'No data in the body returned by the MAIF api')
-        log('error', err, 'error message')
-        if (err && err.message) log('error', err.message)
+        return next('No data in the body returned by the MAIF api')
       }
 
       next()
