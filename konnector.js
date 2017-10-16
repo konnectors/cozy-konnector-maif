@@ -126,14 +126,8 @@ function fetchData (requiredFields, entries, data, next) {
         next('LOGIN_FAILED')
       })
     } else if (response && response.statusCode !== 200 && response.statusCode !== '200') {
-      let messageType = 'error'
-
-      // Do not fail the konnector for 500 and 503 and prefer a retry
-      if (response.statusCode === 500 || response.statusCode === 503) messageType = 'warning'
-
-      log(messageType, `fetchData error: ${response.statusCode} - ${response.statusMessage}`)
-
-      next('request error')
+      log('warning', `fetchData error: ${response.statusCode} - ${response.statusMessage}`)
+      next(`fetchData error: ${response.statusCode} - ${response.statusMessage}`)
     } else {
       moment.locale('fr')
 
