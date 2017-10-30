@@ -22,6 +22,7 @@
     "build": "webpack",
     "lint": "standard --fix index.js",
     "deploy": "git-directory-deploy --directory build/ --branch build --repo=https://github.com/cozy/cozy-konnector-maif.git",
+    "deploytest": "git-directory-deploy --directory build/ --branch buildtest --repo=https://github.com/cozy/cozy-konnector-maif.git",
     "deploy:travis": "git-directory-deploy --username Cozy --email contact@cozycloud.cc --directory build/ --repo=https://$GITHUB_TOKEN@github.com/cozy/cozy-konnector-maif.git"
   },
   "devDependencies": {
