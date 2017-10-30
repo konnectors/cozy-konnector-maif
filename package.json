@@ -1,0 +1,35 @@
+{
+  "name": "cozy-konnector-maif",
+  "version": "1.0.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cozy/cozy-konnector-maif.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "cozy-konnector-libs": "^3.0.2"
+  },
+  "scripts": {
+    "test": "jest",
+    "start": "node index.js",
+    "dev": "cozy-konnector-dev",
+    "standalone": "cozy-konnector-standalone",
+    "standalone:record": "REPLAY=record cozy-konnector-standalone",
+    "standalone:replay": "REPLAY=replay cozy-konnector-standalone",
+    "build": "webpack",
+    "lint": "standard --fix index.js",
+    "deploy": "git-directory-deploy --directory build/ --branch build --repo=https://github.com/cozy/cozy-konnector-maif.git",
+    "deploytest": "git-directory-deploy --directory build/ --branch buildtest --repo=https://github.com/cozy/cozy-konnector-maif.git",
+    "deploy:travis": "git-directory-deploy --username Cozy --email contact@cozycloud.cc --directory build/ --repo=https://$GITHUB_TOKEN@github.com/cozy/cozy-konnector-maif.git"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^4.0.1",
+    "git-directory-deploy": "^1.5.1",
+    "jest": "^21.1.0",
+    "standard": "^10.0.2",
+    "webpack": "^3"
+  }
+}
