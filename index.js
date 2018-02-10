@@ -1,38 +1,31 @@
 const moment = require('moment')
-const {BaseKonnector, cozyClient, log, request, updateOrCreate} = require('cozy-konnector-libs')
+const {BaseKonnector, cozyClient, log, requestFactory, updateOrCreate} = require('cozy-konnector-libs')
 
 const apikey = 'eeafd0bd-a921-420e-91ce-3b52ee5807e8'
 const infoUrl = `https://openapiweb.maif.fr/prod/cozy/v1/mes_infos?apikey=${apikey}`
 
 const REQUEST_TIMEOUT_MS = 10000
 
-let rq = request({
+let request = requestFactory({
   // debug: true,
 })
 
 module.exports = new BaseKonnector(function fetch (fields) {
-  return fetchData.bind(this)(fields)
-  .catch(err => {
-    if (err.statusCode === 401) {
-      log('info', 'Access token expired. Renewing it')
-      return renewAndFetchData.bind(this)(fields)
-      .catch(err => {
-        log('error', err)
-        this.terminate('Could not renew maif tokens')
-      })
-    } else {
-      this.terminate(`fetchData error: ${err.statusCode} - ${err.statusMessage}`)
-    }
-  })
-  .then(response => normalizeResponse.bind(this)(response))
-  .then(entries => {
-    updateOrCreate(entries.contrats, 'fr.maif.maifuser.contrat', ['societaire'])
-    .then(() => updateOrCreate(entries.homes, 'fr.maif.maifuser.home', ['name']))
-    .then(() => updateOrCreate(entries.foyers, 'fr.maif.maifuser.foyer', ['name']))
-    .then(() => updateOrCreate(entries.paymenttermss, 'fr.maif.maifuser.paymentterms', ['societaire']))
-    .then(() => updateOrCreate(entries.sinistres, 'fr.maif.maifuser.sinistre', ['timestamp']))
-    .then(() => updateOrCreate(entries.societaires, 'fr.maif.maifuser.societaire', ['email']))
-  })
+  const fetch = isTokenExpired(fields.access_token) ? renewAndFetchData : fetchData
+
+  return fetch.bind(this)(fields)
+    .then(response => normalizeResponse.bind(this)(response))
+    .then(entries => {
+      return updateOrCreate(entries.contrats, 'fr.maif.maifuser.contrat', ['societaire'])
+      .then(() => updateOrCreate(entries.homes, 'fr.maif.maifuser.home', ['name']))
+      .then(() => updateOrCreate(entries.foyers, 'fr.maif.maifuser.foyer', ['name']))
+      .then(() => updateOrCreate(entries.paymenttermss, 'fr.maif.maifuser.paymentterms', ['societaire']))
+      .then(() => updateOrCreate(entries.sinistres, 'fr.maif.maifuser.sinistre', ['timestamp']))
+      .then(() => updateOrCreate(entries.societaires, 'fr.maif.maifuser.societaire', ['email']))
+    }).catch(err => {
+      log('error', JSON.stringify(err))
+      this.terminate('VENDOR_DOWN')
+    })
 })
 
 // for tests
@@ -45,6 +38,22 @@ function renewToken (requiredFields) {
     requiredFields.access_token = body.attributes.oauth.access_token
     // log('info', requiredFields.access_token, 'new access_token')
   })
+}
+
+function isTokenExpired(token){
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace('-', '+').replace('_', '/');
+  var decodedToken = JSON.parse(Buffer.from(base64, 'base64'));
+  var decodedTimestamp = decodedToken.exp*1000;
+  var timestamp = Date.now();
+
+  if(decodedTimestamp > timestamp){
+    log('info', 'Token non expiré ... Fetching des Data')
+    return false;
+  } else {
+    log('info', 'Token expiré ... Renouvellement du token')
+    return true;
+  }
 }
 
 /**
@@ -65,7 +74,7 @@ function cleanHomeData (homeData) {
 function fetchData (fields) {
   log('info', 'fetchData')
 
-  return rq({
+  return request({
     url: infoUrl,
     headers: {
       Authorization: `Bearer ${fields.access_token}`
