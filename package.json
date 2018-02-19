@@ -9,7 +9,7 @@
   "keywords": [],
   "author": "",
   "license": "AGPL-3.0",
-  "main": "index.js",
+  "main": "src/index.js",
   "renovate": {
     "extends": ["config:base"],
     "patch": {
@@ -18,11 +18,11 @@
   },
   "scripts": {
     "test": "jest",
-    "start": "node index.js",
-    "dev": "cozy-konnector-dev",
-    "standalone": "cozy-konnector-standalone",
-    "standalone:record": "REPLAY=record cozy-konnector-standalone",
-    "standalone:replay": "REPLAY=replay cozy-konnector-standalone",
+    "start": "node src/index.js",
+    "dev": "cozy-konnector-dev src/index.js",
+    "standalone": "cozy-konnector-standalone src/index.js",
+    "standalone:record": "REPLAY=record cozy-konnector-standalone src/index.js",
+    "standalone:replay": "REPLAY=replay cozy-konnector-standalone src/index.js",
     "build": "webpack",
     "lint": "standard --fix index.js",
     "deploy": "git-directory-deploy --directory build/ --branch build --repo=https://github.com/konnectors/cozy-konnector-maif.git",
