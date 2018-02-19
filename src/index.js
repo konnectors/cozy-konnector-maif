@@ -1,3 +1,9 @@
+// Force sentry DSN into environment variables
+// In the future, will be set by the stack
+process.env.SENTRY_DSN =
+  process.env.SENTRY_DSN ||
+  "https://1bdc9628c1724cb899ce99bb547efd19:6bd1ecd2e64e42558499c9b2a5d1a0e7@sentry.cozycloud.cc/17";
+
 const moment = require("moment");
 const {
   BaseKonnector,
