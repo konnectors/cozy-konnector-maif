@@ -9,6 +9,12 @@
   "keywords": [],
   "author": "",
   "license": "AGPL-3.0",
+  "renovate": {
+    "extends": ["config:base"],
+    "patch": {
+      "automerge": true
+    }
+  },
   "dependencies": {
     "cozy-konnector-libs": "3.2.5"
   },
