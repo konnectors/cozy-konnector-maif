@@ -17,11 +17,11 @@ module.exports = new BaseKonnector(function fetch (fields) {
     .then(response => normalizeResponse.bind(this)(response))
     .then(entries => {
       return updateOrCreate(entries.contrats, 'fr.maif.maifuser.contrat', ['societaire'])
-      .then(() => updateOrCreate(entries.homes, 'fr.maif.maifuser.home', ['name']))
-      .then(() => updateOrCreate(entries.foyers, 'fr.maif.maifuser.foyer', ['name']))
-      .then(() => updateOrCreate(entries.paymenttermss, 'fr.maif.maifuser.paymentterms', ['societaire']))
-      .then(() => updateOrCreate(entries.sinistres, 'fr.maif.maifuser.sinistre', ['timestamp']))
-      .then(() => updateOrCreate(entries.societaires, 'fr.maif.maifuser.societaire', ['email']))
+        .then(() => updateOrCreate(entries.homes, 'fr.maif.maifuser.home', ['name']))
+        .then(() => updateOrCreate(entries.foyers, 'fr.maif.maifuser.foyer', ['name']))
+        .then(() => updateOrCreate(entries.paymenttermss, 'fr.maif.maifuser.paymentterms', ['societaire']))
+        .then(() => updateOrCreate(entries.sinistres, 'fr.maif.maifuser.sinistre', ['timestamp']))
+        .then(() => updateOrCreate(entries.societaires, 'fr.maif.maifuser.societaire', ['email']))
     }).catch(err => {
       log('error', JSON.stringify(err))
       this.terminate('VENDOR_DOWN')
@@ -34,25 +34,25 @@ module.exports.renewToken = renewToken
 function renewToken (requiredFields) {
   const accountId = JSON.parse(process.env.COZY_FIELDS).account
   return cozyClient.fetchJSON('POST', `/accounts/maif/${accountId}/refresh`)
-  .then(body => {
-    requiredFields.access_token = body.attributes.oauth.access_token
+    .then(body => {
+      requiredFields.access_token = body.attributes.oauth.access_token
     // log('info', requiredFields.access_token, 'new access_token')
-  })
+    })
 }
 
-function isTokenExpired(token){
-  var base64Url = token.split('.')[1];
-  var base64 = base64Url.replace('-', '+').replace('_', '/');
-  var decodedToken = JSON.parse(Buffer.from(base64, 'base64'));
-  var decodedTimestamp = decodedToken.exp*1000;
-  var timestamp = Date.now();
+function isTokenExpired (token) {
+  var base64Url = token.split('.')[1]
+  var base64 = base64Url.replace('-', '+').replace('_', '/')
+  var decodedToken = JSON.parse(Buffer.from(base64, 'base64'))
+  var decodedTimestamp = decodedToken.exp * 1000
+  var timestamp = Date.now()
 
-  if(decodedTimestamp > timestamp){
+  if (decodedTimestamp > timestamp) {
     log('info', 'Token non expiré ... Fetching des Data')
-    return false;
+    return false
   } else {
     log('info', 'Token expiré ... Renouvellement du token')
-    return true;
+    return true
   }
 }
 
@@ -86,7 +86,7 @@ function fetchData (fields) {
 
 function renewAndFetchData (fields) {
   return renewToken(fields)
-  .then(() => fetchData(fields))
+    .then(() => fetchData(fields))
 }
 
 function normalizeResponse (response) {
