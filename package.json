@@ -10,14 +10,6 @@
   "author": "",
   "license": "AGPL-3.0",
   "main": "src/index.js",
-  "renovate": {
-    "extends": [
-      "config:base"
-    ],
-    "patch": {
-      "automerge": true
-    }
-  },
   "eslintConfig": {
     "env": {
       "es6": true,
