@@ -1,0 +1,54 @@
+{
+  "name": "cozy-konnector-maif",
+  "version": "1.0.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/konnectors/cozy-konnector-maif.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "AGPL-3.0",
+  "main": "src/index.js",
+  "eslintConfig": {
+    "env": {
+      "es6": true,
+      "jest": true,
+      "node": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "prettier"
+    ]
+  },
+  "eslintIgnore": [
+    "build"
+  ],
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "cozy-konnector-dev src/index.js",
+    "standalone": "cozy-konnector-standalone src/index.js",
+    "standalone:record": "REPLAY=record cozy-konnector-standalone src/index.js",
+    "standalone:replay": "REPLAY=replay cozy-konnector-standalone src/index.js",
+    "build": "webpack",
+    "format": "prettier --write '**/*.{js,json}'",
+    "precommit": "eslint .",
+    "lint": "eslint .",
+    "deploy": "git-directory-deploy --directory build/ --branch build --repo=https://github.com/konnectors/cozy-konnector-maif.git",
+    "deploy:prod": "git-directory-deploy --directory build/ --branch latest --repo=https://github.com/konnectors/cozy-konnector-maif.git"
+  },
+  "dependencies": {
+    "cozy-konnector-libs": "3.8.1"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "4.5.1",
+    "eslint": "4.19.1",
+    "eslint-config-prettier": "2.9.0",
+    "git-directory-deploy": "1.5.1",
+    "husky": "0.14.3",
+    "prettier": "1.12.0",
+    "pretty-quick": "1.4.1",
+    "webpack": "4.5.0",
+    "webpack-cli": "2.0.14"
+  }
+}
