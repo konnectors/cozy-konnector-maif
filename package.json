@@ -1,6 +1,6 @@
 {
   "name": "cozy-konnector-maif",
-  "version": "1.0.0",
+  "version": "0.7.3",
   "description": "",
   "repository": {
     "type": "git",
@@ -34,14 +34,15 @@
     "format": "prettier --write '**/*.{js,json}'",
     "precommit": "eslint .",
     "lint": "eslint .",
-    "deploy": "git-directory-deploy --directory build/ --branch build --repo=https://github.com/konnectors/cozy-konnector-maif.git",
-    "deploy:prod": "git-directory-deploy --directory build/ --branch latest --repo=https://github.com/konnectors/cozy-konnector-maif.git"
+    "deploy": "git-directory-deploy --directory build/ --branch ${DEPLOY_BRANCH:-build} --repo=${DEPLOY_REPOSITORY:-https://$GITHUB_TOKEN@github.com/konnectors/cozy-konnector-maif.git}",
+    "cozyPublish": "cozy-app-publish --token $REGISTRY_TOKEN --space mes_infos --build-commit $(git rev-parse ${DEPLOY_BRANCH:-build})"
   },
   "dependencies": {
     "cozy-konnector-libs": "3.8.1"
   },
   "devDependencies": {
     "copy-webpack-plugin": "4.5.1",
+    "cozy-app-publish": "0.3.5",
     "eslint": "4.19.1",
     "eslint-config-prettier": "2.9.0",
     "git-directory-deploy": "1.5.1",
