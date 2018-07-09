@@ -15,6 +15,9 @@
       "type": "hidden"
     }
   },
+  "oauth": {
+    "scope": "openid+profile+offline_access"
+  },
   "data_types": [
     "profile",
     "contract",
