@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "copy-webpack-plugin": "4.5.2",
-    "cozy-app-publish": "0.6.0",
+    "cozy-app-publish": "0.7.0",
     "eslint": "5.5.0",
     "eslint-config-prettier": "2.10.0",
     "git-directory-deploy": "1.5.1",
