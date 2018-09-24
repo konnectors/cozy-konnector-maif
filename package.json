@@ -50,6 +50,6 @@
     "prettier": "1.14.3",
     "pretty-quick": "1.7.0",
     "webpack": "4.19.1",
-    "webpack-cli": "3.1.0"
+    "webpack-cli": "3.1.1"
   }
 }
