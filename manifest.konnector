@@ -5,7 +5,7 @@
   "language": "node",
   "icon": "maif.svg",
   "slug": "maif",
-  "source": "git://github.com/konnectors/cozy-konnector-maif.git#build",
+  "source": "git://github.com/konnectors/cozy-konnector-maif.git",
   "editor": "MesInfos",
   "vendor_link": "maif.fr",
   "categories": ["insurance"],
@@ -83,5 +83,6 @@
       "short_description": "Fetch your MAIF data in your Cozy",
       "long_description": "This provider will allow you to fetch your profile and all your MAIF contracts, sinisters and other informations in your Cozy."
     }
-  }
+  },
+  "manifest_version": "2"
 }
