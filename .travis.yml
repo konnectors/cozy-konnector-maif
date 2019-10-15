@@ -16,13 +16,11 @@ script:
   - yarn lint
 deploy:
 - provider: script
-  repo: konnectors/cozy-konnector-digiposte
   skip-cleanup: true
   script: DEPLOY_BRANCH=build && yarn deploy && yarn cozyPublish
   on:
     branch: master
 - provider: script
-  repo: konnectors/cozy-konnector-digiposte
   skip-cleanup: true
   script: DEPLOY_BRANCH=build && yarn deploy && yarn cozyPublish
   on:
