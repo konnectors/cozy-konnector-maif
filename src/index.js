@@ -58,10 +58,6 @@ module.exports = new BaseKonnector(function fetch(fields) {
           ])
         );
     })
-    .catch(err => {
-      log("error", JSON.stringify(err));
-      this.terminate("VENDOR_DOWN");
-    });
 });
 
 // for tests
@@ -74,7 +70,11 @@ function renewToken(requiredFields) {
     .then(body => {
       requiredFields.access_token = body.attributes.oauth.access_token;
       // log('info', requiredFields.access_token, 'new access_token')
-    });
+    })
+    .catch(err => {
+      log('error', err.message)
+        throw new Error('USER_ACTION_NEEDED_OAUTH_OUTDATED')
+    })
 }
 
 function isTokenExpired(token) {
