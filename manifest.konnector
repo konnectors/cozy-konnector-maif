@@ -1,5 +1,5 @@
 {
-  "version": "0.7.3",
+  "version": "0.7.4",
   "name": "Maif",
   "type": "konnector",
   "language": "node",
@@ -8,7 +8,9 @@
   "source": "git://github.com/konnectors/cozy-konnector-maif.git#build",
   "editor": "MesInfos",
   "vendor_link": "maif.fr",
-  "categories": ["insurance"],
+  "categories": [
+    "insurance"
+  ],
   "screenshots": [],
   "fields": {
     "access_token": {
@@ -34,7 +36,9 @@
     "accounts": {
       "description": "Required to get the account's data",
       "type": "io.cozy.accounts",
-      "verbs": ["GET"]
+      "verbs": [
+        "GET"
+      ]
     },
     "maifusers": {
       "description": "Required to get sociétaire's data",
@@ -64,13 +68,14 @@
       "description": "Required to get societaire's information",
       "type": "fr.maif.maifuser.societaire"
     }
-
   },
   "developer": {
     "name": "Cozy Cloud",
     "url": "https://cozy.io"
   },
-  "langs": ["fr"],
+  "langs": [
+    "fr"
+  ],
   "locales": {
     "fr": {
       "short_description": "Récupérer vos données MAIF dans votre Cozy",
