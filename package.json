@@ -35,7 +35,8 @@
     "precommit": "eslint .",
     "lint": "eslint .",
     "deploy": "git-directory-deploy --directory build/ --branch ${DEPLOY_BRANCH:-build} --repo=${DEPLOY_REPOSITORY:-https://$GITHUB_TOKEN@github.com/konnectors/cozy-konnector-maif.git}",
-    "cozyPublish": "cozy-app-publish --token $REGISTRY_TOKEN --space mes_infos --build-commit $(git rev-parse ${DEPLOY_BRANCH:-build})"
+    "cozyPublish": "cozy-app-publish --token $REGISTRY_TOKEN --build-commit $(git rev-parse ${DEPLOY_BRANCH:-build})",
+    "travisDeployKey": "./bin/generate_travis_deploy_key"
   },
   "dependencies": {
     "cozy-konnector-libs": "3.8.1"
